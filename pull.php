@@ -104,8 +104,8 @@
  if ($newVal)
  {
   exec($git.' add '.$dest);
-  exec($git.' commit -m "AppID Update on '.date('Y-m-d', $t).'"');
-  exec($git.' tag "v'.date('Y.m.d', $t).'"');
+  exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
+  exec($git.' tag "v'.date('Y.m.d').'"');
   exec($git.' push');
   exec($git.' push --tags');
  }
