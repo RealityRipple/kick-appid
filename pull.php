@@ -1,7 +1,7 @@
 <?php
  $url = 'https://kick.com';
  $git = '/usr/bin/git';
- $dest = './app.json';
+ $dest = 'app.json';
 
  function getScriptURLs($url)
  {
@@ -105,7 +105,7 @@
   file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
   if ($newApp)
   {
-   exec($git.' add '.$dest);
+   exec($git.' add ./'.$dest);
    exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
    exec($git.' tag "v'.date('Y.m.d').'"');
    exec($git.' push');
@@ -113,7 +113,7 @@
   }
   else
   {
-   exec($git.' add '.$dest);
+   exec($git.' add ./'.$dest);
    exec($git.' commit -m "Script URL Update on '.date('Y-m-d').'"');
    exec($git.' push');
   }
