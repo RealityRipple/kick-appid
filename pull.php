@@ -83,7 +83,6 @@
    {
     $newVal = true;
     $jRet['_script_url'] = $foundURL;
-    file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
    }
   }
  }
@@ -98,11 +97,11 @@
   {
    $newVal = true;
    $jRet['PUSHER_APP_ID'] = $appID;
-   file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
   }
  }
  if ($newVal)
  {
+  file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
   exec($git.' add '.$dest);
   exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
   exec($git.' tag "v'.date('Y.m.d').'"');
