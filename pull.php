@@ -60,7 +60,8 @@
   return $ids[0][1];
  }
 
- $newVal = false;
+ $newScript = false;
+ $newApp = false;
  $jRet = json_decode(file_get_contents($dest), true);
  $scriptURLs = getScriptURLs($url);
  $foundURL = false;
@@ -81,7 +82,7 @@
   {
    if ($jRet['_script_url'] !== $foundURL)
    {
-    $newVal = true;
+    $newScript = true;
     $jRet['_script_url'] = $foundURL;
    }
   }
@@ -95,17 +96,26 @@
  {
   if ($jRet['PUSHER_APP_ID'] !== $appID)
   {
-   $newVal = true;
+   $newApp = true;
    $jRet['PUSHER_APP_ID'] = $appID;
   }
  }
- if ($newVal)
+ if ($newScript || $newApp)
  {
   file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
-  exec($git.' add '.$dest);
-  exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
-  exec($git.' tag "v'.date('Y.m.d').'"');
-  exec($git.' push');
-  exec($git.' push --tags');
+  if ($newApp)
+  {
+   exec($git.' add '.$dest);
+   exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
+   exec($git.' tag "v'.date('Y.m.d').'"');
+   exec($git.' push');
+   exec($git.' push --tags');
+  }
+  else
+  {
+   exec($git.' add '.$dest);
+   exec($git.' commit -m "Script URL Update on '.date('Y-m-d').'"');
+   exec($git.' push');
+  }
  }
 ?>
