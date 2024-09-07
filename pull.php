@@ -5,6 +5,7 @@
 
  function getScriptURLs($url)
  {
+  /*
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -15,6 +16,8 @@
   if ($buffer === false)
    return false;
   curl_close($ch);
+  */
+  $buffer = file_get_contents($GLOBALS['siteRoot'].'/rrs/git/kick-appid/kick.html');
   $scripts = array();
   $ct = preg_match_all('/<script\s+.*src="([^"]+)".*>/i', $buffer, $scripts, PREG_SET_ORDER);
   if ($ct < 1)
