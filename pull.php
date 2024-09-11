@@ -19,7 +19,7 @@
   */
   $buffer = file_get_contents($GLOBALS['siteRoot'].'/rrs/git/kick-appid/kick.html');
   $scripts = array();
-  $ct = preg_match_all('/<script\s+.*src="([^"]+)".*>/i', $buffer, $scripts, PREG_SET_ORDER);
+  $ct = preg_match_all('/<script\s+[^>]*src="([^"]+)"[^>]*>/i', $buffer, $scripts, PREG_SET_ORDER);
   if ($ct < 1)
    return false;
   $urls = array();
