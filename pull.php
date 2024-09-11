@@ -1,6 +1,6 @@
 <?php
  $url = 'https://kick.com';
- $git = '/usr/bin/git';
+ $git = '/usr/bin/git -C '.$GLOBALS['siteRoot'].'/rrs/git/kick-appid/';
  $dest = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/app.json';
 
  function getScriptURLs($url)
