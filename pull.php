@@ -2,6 +2,7 @@
  $url = 'https://kick.com';
  $git = '/usr/bin/git -C '.$GLOBALS['siteRoot'].'/rrs/git/kick-appid/';
  $dest = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/app.json';
+ $jscr = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/script.json';
 
  function getScriptURLs($url)
  {
@@ -63,14 +64,16 @@
   return $ids[0][1];
  }
 
- $newScript = false;
- $newApp = false;
- $jRet = json_decode(file_get_contents($dest), true);
- $scriptURLs = getScriptURLs($url);
- $foundURL = false;
- $appID = false;
- if ($scriptURLs !== false)
+ function updateScript($url, $destScript)
  {
+  $scriptURLs = getScriptURLs($url);
+  if ($scriptURLs === false)
+   return array(false, false);
+  $jScript = json_decode(file_get_contents($destScript), true);
+  if ($jScript === null)
+   $jScript = array('url' => false);
+  $foundURL = false;
+  $appID = false;
   for ($i = 0; $i < count($scriptURLs); $i++)
   {
    $tmpID = getAppID($scriptURLs[$i]);
@@ -81,44 +84,35 @@
     break;
    }
   }
-  if ($foundURL !== false)
+  if ($foundURL === false)
+   $foundURL = $jScript['url'];
+  else if ($jScript['url'] !== $foundURL)
   {
-   if ($jRet['_script_url'] !== $foundURL)
-   {
-    $newScript = true;
-    $jRet['_script_url'] = $foundURL;
-   }
+   $jScript['url'] = $foundURL;
+   file_put_contents($destScript, json_encode($jScript, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
   }
+  return array($appID, $foundURL);
  }
- if ($foundURL === false)
-  $foundURL = $jRet['_script_url'];
 
+ $appID = false;
+ $foundURL = false;
+ list($appID, $foundURL) = updateScript($url, $jscr);
+ if ($foundURL === false)
+  return;
  if ($appID === false)
   $appID = getAppID($foundURL);
- if ($appID !== false)
- {
-  if ($jRet['PUSHER_APP_ID'] !== $appID)
-  {
-   $newApp = true;
-   $jRet['PUSHER_APP_ID'] = $appID;
-  }
- }
- if ($newScript || $newApp)
- {
-  file_put_contents($dest, json_encode($jRet, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
-  if ($newApp)
-  {
-   exec($git.' add '.$dest);
-   exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
-   exec($git.' tag "v'.date('Y.m.d').'"');
-   exec($git.' push');
-   exec($git.' push --tags');
-  }
-  else
-  {
-   exec($git.' add '.$dest);
-   exec($git.' commit -m "Script URL Update on '.date('Y-m-d').'"');
-   exec($git.' push');
-  }
- }
+ if ($appID === false)
+  return;
+ $jApp = json_decode(file_get_contents($dest), true);
+ if ($jApp === null)
+  $jApp = array('PUSHER_APP_ID' => false);
+ if ($jApp['PUSHER_APP_ID'] === $appID)
+  return;
+ $jApp['PUSHER_APP_ID'] = $appID;
+ file_put_contents($dest, json_encode($jApp, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT));
+ exec($git.' add '.$dest);
+ exec($git.' commit -m "AppID Update on '.date('Y-m-d').'"');
+ exec($git.' tag "v'.date('Y.m.d').'"');
+ exec($git.' push');
+ exec($git.' push --tags');
 ?>
