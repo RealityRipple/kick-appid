@@ -1,6 +1,8 @@
 <?php
- require_once($GLOBALS['siteRoot'].'/rrs/git/kick-appid/shared.php.inc');
- $req = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/req.json';
+ $HOME = posix_getpwuid(posix_getuid())['dir'];
+
+ require_once($HOME.'/rrs/git/kick-appid/shared.php.inc');
+ $req = $HOME.'/rrs/git/kick-appid/req.json';
  $out = array();
  $kick = buildReq(
   'https://kick.com/realityripple/chatroom',

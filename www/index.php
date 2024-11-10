@@ -1,6 +1,8 @@
 <?php
- $req = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/req.json';
- $store = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/store/';
+ $HOME = posix_getpwuid(posix_getuid())['dir'];
+
+ $req = $HOME.'/rrs/git/kick-appid/req.json';
+ $store = $HOME.'/rrs/git/kick-appid/store/';
  if (count(array_keys($_FILES)) === 0)
  {
   header('Content-Type: application/json');

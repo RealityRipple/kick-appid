@@ -1,7 +1,9 @@
 <?php
- require_once($GLOBALS['siteRoot'].'/rrs/git/kick-appid/shared.php.inc');
- $req = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/req.json';
- $store = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/store/';
+ $HOME = posix_getpwuid(posix_getuid())['dir'];
+
+ require_once($HOME.'/rrs/git/kick-appid/shared.php.inc');
+ $req = $HOME.'/rrs/git/kick-appid/req.json';
+ $store = $HOME.'/rrs/git/kick-appid/store/';
 
  function getScriptURLs($buffer)
  {
@@ -43,8 +45,8 @@
 
  function saveAppID($appID)
  {
-  $git = '/usr/bin/git -C '.$GLOBALS['siteRoot'].'/rrs/git/kick-appid/';
-  $app = $GLOBALS['siteRoot'].'/rrs/git/kick-appid/app.json';
+  $git = '/usr/bin/git -C '.$GLOBALS['HOME'].'/rrs/git/kick-appid/';
+  $app = $GLOBALS['HOME'].'/rrs/git/kick-appid/app.json';
   $jApp = json_decode(file_get_contents($app), true);
   if ($jApp === null)
    $jApp = array('PUSHER_APP_ID' => false);
