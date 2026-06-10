@@ -35,7 +35,7 @@
  function getAppID($buffer)
  {
   $ids = array();
-  $ct = preg_match_all('/VITE_PUSHER_APP_KEY:\s*"([0-9a-f]+)"/i', $buffer, $ids, PREG_SET_ORDER);
+  $ct = preg_match_all('/NEXT_PUBLIC_PUSHER_KEY:\s*"([0-9a-f]+)"/i', $buffer, $ids, PREG_SET_ORDER);
   if ($ct < 1)
    return false;
   if (count($ids[0]) < 2)

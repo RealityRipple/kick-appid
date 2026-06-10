@@ -5,7 +5,7 @@
  $req = $HOME.'/rrs/git/kick-appid/req.json';
  $out = array();
  $kick = buildReq(
-  'https://kick.com/realityripple/chatroom',
+  'https://kick.com/popout/realityripple/chat',
   array(
    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
    'Sec-Fetch-Dest' => 'document',
